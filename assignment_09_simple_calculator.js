@@ -75,3 +75,167 @@
 // =============================================================================
 
 
+const readlineSync = require('readline-sync');
+
+/**
+ * Adds two numbers.
+ * @param {number} a
+ * @param {number} b
+ * @returns {number}
+ */
+function add(a, b) {
+  return a + b;
+}
+
+/**
+ * Subtracts b from a.
+ * @param {number} a
+ * @param {number} b
+ * @returns {number}
+ */
+function subtract(a, b) {
+  return a - b;
+}
+
+/**
+ * Multiplies two numbers.
+ * @param {number} a
+ * @param {number} b
+ * @returns {number}
+ */
+function multiply(a, b) {
+  return a * b;
+}
+
+/**
+ * Divides a by b. Returns null if b is zero.
+ * @param {number} a
+ * @param {number} b
+ * @returns {number|null}
+ */
+function divide(a, b) {
+  if (b === 0) {
+    return null;
+  }
+  return a / b;
+}
+
+/**
+ * Computes the remainder of a divided by b. Returns null if b is zero.
+ * @param {number} a
+ * @param {number} b
+ * @returns {number|null}
+ */
+function modulus(a, b) {
+  if (b === 0) {
+    return null;
+  }
+  return a % b;
+}
+
+/**
+ * Raises a to the power of b.
+ * @param {number} a
+ * @param {number} b
+ * @returns {number}
+ */
+function exponentiate(a, b) {
+  return a ** b;
+}
+
+/**
+ * Displays the calculator menu.
+ */
+function printMenu() {
+  console.log('\n============================');
+  console.log('     SIMPLE CALCULATOR');
+  console.log('============================');
+  console.log('1. Addition');
+  console.log('2. Subtraction');
+  console.log('3. Multiplication');
+  console.log('4. Division');
+  console.log('5. Modulus');
+  console.log('6. Exponentiation');
+  console.log('7. Quit');
+}
+
+/**
+ * Prompts the user for two numbers.
+ * @returns {{a: number, b: number}}
+ */
+function getTwoNumbers() {
+  const a = readlineSync.questionFloat('Enter first number : ');
+  const b = readlineSync.questionFloat('Enter second number: ');
+  return { a, b };
+}
+
+/**
+ * Performs the requested operation, handling division-by-zero errors,
+ * and prints a formatted result.
+ * @param {number} choice - The menu choice (1-6).
+ */
+function performOperation(choice) {
+  const { a, b } = getTwoNumbers();
+  let result;
+  let symbol;
+
+  switch (choice) {
+    case 1:
+      result = add(a, b);
+      symbol = '+';
+      break;
+    case 2:
+      result = subtract(a, b);
+      symbol = '-';
+      break;
+    case 3:
+      result = multiply(a, b);
+      symbol = '*';
+      break;
+    case 4:
+      result = divide(a, b);
+      symbol = '/';
+      if (result === null) {
+        console.log('Error: Cannot divide by zero.');
+        return;
+      }
+      break;
+    case 5:
+      result = modulus(a, b);
+      symbol = '%';
+      if (result === null) {
+        console.log('Error: Cannot divide by zero.');
+        return;
+      }
+      break;
+    case 6:
+      result = exponentiate(a, b);
+      symbol = '**';
+      break;
+  }
+
+  console.log(`Result: ${a} ${symbol} ${b} = ${result.toFixed(2)}`);
+}
+
+/**
+ * Runs the main menu loop until the user chooses to quit.
+ */
+function main() {
+  let running = true;
+
+  while (running) {
+    printMenu();
+    const choice = readlineSync.questionInt('Select an operation (1-7): ');
+
+    if (choice === 7) {
+      console.log('Goodbye!');
+      running = false;
+    } else if (choice >= 1 && choice <= 6) {
+      performOperation(choice);
+    } else {
+      console.log('Error: Please enter a number between 1 and 7.');
+    }
+  }
+}
+
+main();

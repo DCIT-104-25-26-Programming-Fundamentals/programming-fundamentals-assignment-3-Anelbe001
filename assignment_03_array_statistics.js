@@ -44,3 +44,87 @@
 // =============================================================================
 
 
+const readlineSync = require('readline-sync');
+
+/**
+ * Calculates the sum of all numbers in an array.
+ * @param {number[]} numbers
+ * @returns {number} The sum of all elements.
+ */
+function calculateSum(numbers) {
+  let sum = 0;
+  for (let i = 0; i < numbers.length; i++) {
+    sum += numbers[i];
+  }
+  return sum;
+}
+
+/**
+ * Calculates the average of all numbers in an array.
+ * @param {number[]} numbers
+ * @returns {number} The average of all elements.
+ */
+function calculateAverage(numbers) {
+  // Reuse calculateSum instead of looping again
+  const sum = calculateSum(numbers);
+  return sum / numbers.length;
+}
+
+/**
+ * Finds the maximum value in an array.
+ * @param {number[]} numbers
+ * @returns {number} The largest element.
+ */
+function findMax(numbers) {
+  let max = numbers[0];
+  for (let i = 1; i < numbers.length; i++) {
+    if (numbers[i] > max) {
+      max = numbers[i];
+    }
+  }
+  return max;
+}
+
+/**
+ * Finds the minimum value in an array.
+ * @param {number[]} numbers
+ * @returns {number} The smallest element.
+ */
+function findMin(numbers) {
+  let min = numbers[0];
+  for (let i = 1; i < numbers.length; i++) {
+    if (numbers[i] < min) {
+      min = numbers[i];
+    }
+  }
+  return min;
+}
+
+function main() {
+  const count = readlineSync.questionInt('How many numbers? ');
+
+  // Validate that N is a positive integer
+  if (count <= 0) {
+    console.log('Error: The count must be a positive integer.');
+    return;
+  }
+
+  const numbers = [];
+  for (let i = 0; i < count; i++) {
+    const value = readlineSync.questionInt(`Enter number ${i + 1}: `);
+    numbers.push(value);
+  }
+
+  const sum = calculateSum(numbers);
+  const average = calculateAverage(numbers);
+  const max = findMax(numbers);
+  const min = findMin(numbers);
+
+  console.log('\nResults:');
+  console.log(`Sum:     ${sum}`);
+  console.log(`Average: ${average}`);
+  console.log(`Maximum: ${max}`);
+  console.log(`Minimum: ${min}`);
+}
+
+main();
